@@ -58,7 +58,7 @@ public final class RtlUtils {
      * This can be useful to append to {@code FreeTypeFontGenerator.FreeTypeFontParameter.characters} to ensure every
      * char this may need is present in a generated BitmapFont.
      */
-    public static final String ALL_CHARS = ARABIC_CHARS + HEBREW_CHARS;
+    public static final String RTL_CHARS = ARABIC_CHARS + HEBREW_CHARS;
 
     private static final IntIntMap types = new IntIntMap(chars.length);
     private static final IntIntMap startChars = new IntIntMap(chars.length);
@@ -172,5 +172,9 @@ public final class RtlUtils {
 
     public static String getArabicChars() {
         return ARABIC_CHARS;
+    }
+    public static String getHebrewChars() { return HEBREW_CHARS;}
+    public static String getRtlChars() {
+        return RTL_CHARS;
     }
 }

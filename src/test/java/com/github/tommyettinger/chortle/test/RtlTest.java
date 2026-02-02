@@ -50,6 +50,7 @@ public class RtlTest extends ApplicationAdapter {
     private static final String PERSIAN_LANGUAGE = "این متن جهت تست گچپژ می‌باشد.";
     private static final String PERSIAN_COMPLEX_TEXT = "اتوبوس ۱۲ نفره Bus است!";
     private static final String HEBREW_TEXT = "אָלֶף־בֵּית עִבְרִי Hebrew! ";
+    private static final String ENGLISH_TEXT = "Testing, 1, 2, testing, 123...";
 
     private final Chortle arFont = new Chortle();
 
@@ -65,7 +66,7 @@ public class RtlTest extends ApplicationAdapter {
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("GoNotoAfricaMiddleEast.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.characters += RtlUtils.ALL_CHARS;
+        parameter.characters += RtlUtils.getRtlChars();
         parameter.size = 40;
         parameter.color = Color.GOLD;
 //        parameter.borderColor = Color.GOLD;
@@ -105,16 +106,16 @@ public class RtlTest extends ApplicationAdapter {
         * Persian test text
          */
 
-        Label persianLabel = new Label(arFont.getText(PERSIAN_LANGUAGE) + "\n" + arFont.getText(PERSIAN_COMPLEX_TEXT), new Label.LabelStyle(freeTypeFont, Color.WHITE));
+        Label persianLabel = new Label(arFont.getText(PERSIAN_LANGUAGE + "\n" + PERSIAN_COMPLEX_TEXT), new Label.LabelStyle(freeTypeFont, Color.WHITE));
         persianLabel.layout();
         persianLabel.setAlignment(Align.center);
         persianLabel.setPosition(512f, 440f, Align.center);
         stage.addActor(persianLabel);
 
-        Label hebrewLabel = new Label(arFont.getText(HEBREW_TEXT), new Label.LabelStyle(freeTypeFont, Color.WHITE));
+        Label hebrewLabel = new Label(arFont.getText(HEBREW_TEXT + "\n" + ENGLISH_TEXT), new Label.LabelStyle(freeTypeFont, Color.WHITE));
         hebrewLabel.layout();
         hebrewLabel.setAlignment(Align.center);
-        hebrewLabel.setPosition(512f, 80f, Align.center);
+        hebrewLabel.setPosition(512f, 70f, Align.center);
         stage.addActor(hebrewLabel);
 
         Gdx.input.setInputProcessor(stage);

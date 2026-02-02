@@ -119,7 +119,11 @@ public class Chortle {
      */
     private void filter(int index) {
         Glyph glyph = glyphs.get(index);
-        if (!glyph.isRTL() || Ranges.inRange(Ranges.HEBREW, glyph.originalChar)) {
+        if (!glyph.isRTL()) {
+            return;
+        }
+        if(Ranges.inRange(Ranges.HEBREW, glyph.originalChar)){
+            glyph.setChar(glyph.getOriginalChar());
             return;
         }
 

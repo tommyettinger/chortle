@@ -49,7 +49,7 @@ public class RtlTest extends ApplicationAdapter {
     private static final String INSERT_YOUR_NAME = "أدخل إسمك Insert Your Name: ";
     private static final String PERSIAN_LANGUAGE = "این متن جهت تست گچپژ می‌باشد.";
     private static final String PERSIAN_COMPLEX_TEXT = "اتوبوس ۱۲ نفره Bus است!";
-    private static final String HEBREW_TEXT = "Hebrew! אָלֶף־בֵּית עִבְרִי,";
+    private static final String HEBREW_TEXT = "אָלֶף־בֵּית עִבְרִי Hebrew! ";
 
     private final Chortle arFont = new Chortle();
 

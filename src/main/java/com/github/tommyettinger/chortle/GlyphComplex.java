@@ -20,37 +20,39 @@
 package com.github.tommyettinger.chortle;
 
 /**
+ * A special case for a Glyph composed of two other Glyphs, where if one Glyph is removed, this changes to use the
+ * other internal Glyph.
+ * <br>
  * Created by Crowni on 10/5/2017.
  **/
+public class GlyphComplex extends Glyph {
 
-public class ArGlyphComplex extends ArGlyph {
+    private Glyph beforeGlyph, afterGlyph;
 
-    private ArGlyph beforeGlyph, afterGlyph;
-
-    // originalChar is a complex
-    public ArGlyphComplex(char complexChar) {
-        super(complexChar, true);
+    // The originalChar is "complex" but modifiedChar may still be set.
+    public GlyphComplex(char complexChar) {
+        super(complexChar);
     }
 
-    public ArGlyph getBeforeGlyph() {
+    public Glyph getBeforeGlyph() {
         return beforeGlyph;
     }
 
-    public void setBeforeGlyph(ArGlyph beforeGlyph) {
+    public void setBeforeGlyph(Glyph beforeGlyph) {
         if(this.beforeGlyph == null)
             this.beforeGlyph = beforeGlyph;
     }
 
-    public ArGlyph getAfterGlyph() {
+    public Glyph getAfterGlyph() {
         return afterGlyph;
     }
 
-    public void setAfterGlyph(ArGlyph afterGlyph) {
+    public void setAfterGlyph(Glyph afterGlyph) {
         if(this.afterGlyph == null)
             this.afterGlyph = afterGlyph;
     }
 
-    public void setSimpleGlyphs(ArGlyph glyph0, ArGlyph glyph1) {
+    public void setSimpleGlyphs(Glyph glyph0, Glyph glyph1) {
         if (beforeGlyph == null)
             beforeGlyph = glyph0;
         if(afterGlyph == null)

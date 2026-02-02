@@ -22,17 +22,23 @@ package com.github.tommyettinger.chortle;
 import com.badlogic.gdx.utils.Array;
 
 /**
+ * The main way of using this library.
+ * <br>
+ * Create a {@code new Chortle()} and use its {@link #getText(String)} to transform
+ * a String that may contain RTL scripts to use different directionality for that text only.
+ * <br>
  * Created by Crowni on 10/5/2017.
  **/
-public class ArFont {
-    private final Array<ArGlyph> glyphs = new Array<>();
-    private final StringBuilder workingText = new StringBuilder(128), subtext = new StringBuilder(16);
+public class Chortle {
+    private final Array<Glyph> glyphs = new Array<>();
+    private final StringBuilder workingText = new StringBuilder(128);
+    private final StringBuilder subtext = new StringBuilder(16);
 
     public String typing(char c) {
         if (c == '\b') // backspace
             popChar();
         else
-            addChar(new ArGlyph(c, ArUtils.isArabicNonNumeric(c)));
+            addChar(new Glyph(c));
         workingText.setLength(0);
         return reorder(workingText).toString();
     }
@@ -44,7 +50,7 @@ public class ArFont {
             String line = split[ln];
             for (int i = 0, n = line.length(); i < n; i++) {
                 char c = line.charAt(i);
-                addChar(new ArGlyph(c, ArUtils.isArabicNonNumeric(c)));
+                addChar(new Glyph(c));
             }
             reorder(workingText);
             if(ln + 1 < split.length) workingText.append('\n');
@@ -53,7 +59,7 @@ public class ArFont {
         return workingText.toString();
     }
 
-    private void addChar(ArGlyph glyph) {
+    private void addChar(Glyph glyph) {
         glyphs.add(glyph);
         filterLastChars(1);
         filterLastChars(2);
@@ -61,9 +67,9 @@ public class ArFont {
 
     private void popChar() {
         if (glyphs.size > 0) {
-            ArGlyph aChar = glyphs.pop();
-            if (aChar instanceof ArGlyphComplex) {
-                glyphs.add(((ArGlyphComplex) aChar).getAfterGlyph());
+            Glyph aChar = glyphs.pop();
+            if (aChar instanceof GlyphComplex) {
+                glyphs.add(((GlyphComplex) aChar).getAfterGlyph());
             }
             filterLastChars(1);
         }
@@ -112,13 +118,13 @@ public class ArFont {
      * @param index index of the glyph that will be mutated in-place
      */
     private void filter(int index) {
-        ArGlyph glyph = glyphs.get(index);
-        if (!glyph.isRTL()) {
+        Glyph glyph = glyphs.get(index);
+        if (!glyph.isRTL() || Ranges.inRange(Ranges.HEBREW, glyph.originalChar)) {
             return;
         }
 
-        ArGlyph before = getPositionGlyph(index - 1);
-        ArGlyph after = getPositionGlyph(index + 1);
+        Glyph before = getPositionGlyph(index - 1);
+        Glyph after = getPositionGlyph(index + 1);
 
 
         /* CASE 1 */
@@ -128,40 +134,40 @@ public class ArFont {
 
         /* CASE 2 */
         if (before == null && after != null)
-            glyph.setChar(ArUtils.getStartChar(glyph.getOriginalChar()));
+            glyph.setChar(RtlUtils.getStartChar(glyph.getOriginalChar()));
 
 
         /* CASE 3 */
         if (before != null && after == null)
-            if (ArUtils.isALFChar(glyph.getOriginalChar()) && ArUtils.isLAMChar(before.getOriginalChar())) {
+            if (RtlUtils.isALFChar(glyph.getOriginalChar()) && RtlUtils.isLAMChar(before.getOriginalChar())) {
                 addComplexChars(index, glyph);
             } else {
-                if (before.getType() == ArCharCode.X2)
-                    glyph.setChar(ArUtils.getIndividualChar(glyph.getOriginalChar()));
+                if (before.getType() == ArabicData.X2)
+                    glyph.setChar(RtlUtils.getIndividualChar(glyph.getOriginalChar()));
                 else
-                    glyph.setChar(ArUtils.getEndChar(glyph.getOriginalChar()));
+                    glyph.setChar(RtlUtils.getEndChar(glyph.getOriginalChar()));
             }
 
 
         /* CASE 4 */
         if (before != null && after != null)
-            if (glyph.getType() == ArCharCode.X4) {
-                if (before.getType() == ArCharCode.X2)
-                    glyph.setChar(ArUtils.getStartChar(glyph.getOriginalChar()));
+            if (glyph.getType() == ArabicData.X4) {
+                if (before.getType() == ArabicData.X2)
+                    glyph.setChar(RtlUtils.getStartChar(glyph.getOriginalChar()));
                 else
-                    glyph.setChar(ArUtils.getCenterChar(glyph.getOriginalChar()));
+                    glyph.setChar(RtlUtils.getCenterChar(glyph.getOriginalChar()));
             } else {
-                if (before.getType() == ArCharCode.X2)
-                    glyph.setChar(ArUtils.getIndividualChar(glyph.getOriginalChar()));
+                if (before.getType() == ArabicData.X2)
+                    glyph.setChar(RtlUtils.getIndividualChar(glyph.getOriginalChar()));
                 else
-                    glyph.setChar(ArUtils.getEndChar(glyph.getOriginalChar()));
+                    glyph.setChar(RtlUtils.getEndChar(glyph.getOriginalChar()));
             }
 
     }
 
 
-    private void addComplexChars(int index, ArGlyph arGlyph) {
-        ArGlyphComplex glyph = new ArGlyphComplex(ArUtils.getLAM_ALF(arGlyph.getOriginalChar()));
+    private void addComplexChars(int index, Glyph arGlyph) {
+        GlyphComplex glyph = new GlyphComplex(RtlUtils.getLAM_ALF(arGlyph.getOriginalChar()));
         glyph.setSimpleGlyphs(arGlyph, getPositionGlyph(index - 1));
         glyphs.pop();
         glyphs.pop();
@@ -172,9 +178,9 @@ public class ArFont {
      * @param index index of current glyph
      * @return correct position of glyph
      */
-    private ArGlyph getPositionGlyph(int index) {
-        ArGlyph glyph = (index >= 0 && index < glyphs.size) ? glyphs.get(index) : null;
-        return (glyph != null) ? (ArUtils.isInvalidChar(glyph.getOriginalChar()) ? null : glyph) : null;
+    private Glyph getPositionGlyph(int index) {
+        Glyph glyph = (index >= 0 && index < glyphs.size) ? glyphs.get(index) : null;
+        return (glyph != null) ? (RtlUtils.isInvalidChar(glyph.getOriginalChar()) ? null : glyph) : null;
     }
 
 }

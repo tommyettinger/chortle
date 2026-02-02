@@ -20,20 +20,23 @@
 package com.github.tommyettinger.chortle;
 
 /**
+ * The main representation of any char internally in the library.
+ * This tracks if a given char uses RTL directionality. If the char is in the Arabic script, this tracks its "type" for
+ * the purposes of connecting to other characters, and potentially a modified char that can change during filtering.
+ * <br>
  * Created by Crowni on 10/5/2017.
  **/
-
-public class ArGlyph {
+public class Glyph {
 
     protected final char originalChar;
     protected final int type;
     protected char modifiedChar;
-    private final boolean rtl;
+    protected final boolean rtl;
 
-    public ArGlyph(char c, boolean rtl) {
+    public Glyph(char c) {
         this.originalChar = c;
-        this.rtl = rtl;
-        type = ArUtils.getCharType(c);
+        this.rtl = RtlUtils.isRightToLeft(c);
+        type = RtlUtils.getCharType(c);
     }
 
     public char getOriginalChar() {

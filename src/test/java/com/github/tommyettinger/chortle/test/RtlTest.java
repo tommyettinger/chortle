@@ -32,8 +32,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.github.tommyettinger.chortle.ArFont;
-import com.github.tommyettinger.chortle.ArUtils;
+import com.github.tommyettinger.chortle.Chortle;
+import com.github.tommyettinger.chortle.RtlUtils;
 
 /**
  * Created by Crowni on 9/14/2017.
@@ -50,7 +50,7 @@ public class RtlTest extends ApplicationAdapter {
     private static final String PERSIAN_LANGUAGE = "این متن جهت تست گچپژ می‌باشد.";
     private static final String PERSIAN_COMPLEX_TEXT = "اتوبوس ۱۲ نفره Bus است!";
 
-    private final ArFont arFont = new ArFont();
+    private final Chortle arFont = new Chortle();
 
     private Stage stage;
 
@@ -64,7 +64,7 @@ public class RtlTest extends ApplicationAdapter {
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("GoNotoAfricaMiddleEast.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.characters += ArUtils.getAllChars();
+        parameter.characters += RtlUtils.getArabicChars();
         parameter.size = 40;
         parameter.color = Color.GOLD;
 //        parameter.borderColor = Color.GOLD;

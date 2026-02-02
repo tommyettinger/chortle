@@ -20,10 +20,11 @@
 package com.github.tommyettinger.chortle;
 
 /**
+ * Internal data about Arabic-script chars and how they combine.
+ * <br>
  * Created by Crowni on 10/2/2017.
  **/
-
-public class ArCharCode {
+public final class ArabicData {
     public static final int X0 = 0;
     public static final int X2 = 2;
     public static final int X4 = 4;

@@ -90,7 +90,12 @@ repositories {
 
 dependencies {
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
-    testImplementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion" // if you want graphical tests
+    testImplementation ("com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"){
+        exclude group: "org.jcraft", module: "jorbis"
+        exclude group: "org.lwjgl", module: "lwjgl-openal"
+    }
     testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    testImplementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    testImplementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
     testImplementation "junit:junit:4.13.2"
 }

@@ -46,6 +46,19 @@ public final class RtlUtils {
      * char this may need is present in a generated BitmapFont.
      */
     public static final String ARABIC_CHARS = "\u0020\u06F0\u06F1\u06F2\u06F3\u06F4\u06F5\u06F6\u06F7\u06F8\u06F9\u0660\u0661\u0662\u0663\u0664\u0665\u0666\u0667\u0668\u0669\u060C\u0627\u0622\u0623\u0625\u0649\uFEFB\uFEF5\uFEF7\uFEF9\u062F\u0630\u0631\u0632\u0698\u0648\u0624\u0629\u0626\u0628\u067E\u062A\u062B\u062C\u0686\u062D\u062E\u0633\u0634\u0635\u0636\u0637\u0638\u0639\u063A\u0641\u0642\u0643\u06A9\u06AF\u0644\u0645\u0646\u0647\u064A\u06CC\uFE8B\uFE91\uFB58\uFE97\uFE9B\uFE9F\uFB7C\uFEA3\uFEA7\uFEB3\uFEB7\uFEBB\uFEBF\uFEC3\uFEC7\uFECB\uFECF\uFED3\uFED7\uFEDB\uFB90\uFB94\uFEDF\uFEE3\uFEE7\uFEEB\uFEF3\uFBFE\uFE8E\uFE84\uFE88\uFEAA\uFEAC\uFEAE\uFEB0\uFB8B\uFEEE\uFE86\uFE94\uFE8C\uFE92\uFB59\uFE98\uFE9C\uFEA0\uFB7D\uFEA4\uFEA8\uFEB4\uFEB8\uFEBC\uFEC0\uFEC4\uFEC8\uFECC\uFED0\uFED4\uFED8\uFEDC\uFB91\uFB95\uFEE0\uFEE4\uFEE8\uFEEC\uFEF4\uFBFF\uFE82\uFEF0\uFEFC\uFEF6\uFEF8\uFEFA\uFE8A\uFE90\uFB57\uFE96\uFE9A\uFE9E\uFB7B\uFEA2\uFEA6\uFEB2\uFEB6\uFEBA\uFEBE\uFEC2\uFEC6\uFECA\uFECE\uFED2\uFED6\uFEDA\uFB8F\uFB93\uFEDE\uFEE2\uFEE6\uFEEA\uFEF2\uFBFD";
+    /**
+     * A String containing all Hebrew-script characters this handles, plus the ASCII space.
+     * This can be useful to append to {@code FreeTypeFontGenerator.FreeTypeFontParameter.characters} to ensure every
+     * char this may need is present in a generated BitmapFont.
+     */
+    public static final String HEBREW_CHARS = "\u0020\u0591\u0592\u0593\u0594\u0595\u0596\u0597\u0598\u0599\u059A\u059B\u059C\u059D\u059E\u059F\u05A0\u05A1\u05A2\u05A3\u05A4\u05A5\u05A6\u05A7\u05A8\u05A9\u05AA\u05AB\u05AC\u05AD\u05AE\u05AF\u05B0\u05B1\u05B2\u05B3\u05B4\u05B5\u05B6\u05B7\u05B8\u05B9\u05BA\u05BB\u05BC\u05BD\u05BE\u05BF\u05C0\u05C1\u05C2\u05C3\u05C4\u05C5\u05C6\u05C7\u05D0\u05D1\u05D2\u05D3\u05D4\u05D5\u05D6\u05D7\u05D8\u05D9\u05DA\u05DB\u05DC\u05DD\u05DE\u05DF\u05E0\u05E1\u05E2\u05E3\u05E4\u05E5\u05E6\u05E7\u05E8\u05E9\u05EA\u05EF\u05F0\u05F1\u05F2\u05F3\u05F4";
+
+    /**
+     * A String containing all Arabic-script and Hebrew-script characters this handles, plus the ASCII space.
+     * This can be useful to append to {@code FreeTypeFontGenerator.FreeTypeFontParameter.characters} to ensure every
+     * char this may need is present in a generated BitmapFont.
+     */
+    public static final String ALL_CHARS = ARABIC_CHARS + HEBREW_CHARS;
 
     private static final IntIntMap types = new IntIntMap(chars.length);
     private static final IntIntMap startChars = new IntIntMap(chars.length);

@@ -13,11 +13,8 @@ buildscript {
 apply plugin: 'java-library'
 apply plugin: 'com.vanniktech.maven.publish'
 
-//Obviously, change the next line to match your project name.
-def projectName = 'libgdx-library-template'
+def projectName = 'chortle'
 
-//Change this to whatever Maven Central group you might publish to,
-//which is probably not this one if you aren't Tommy Ettinger.
 group = 'com.github.tommyettinger'
 
 version = "$VERSION_NAME" // You can set the version in gradle.properties .
@@ -51,9 +48,6 @@ if (JavaVersion.current().isJava8Compatible()) {
 }
 
 compileJava {
-	// The default Java language level this targets is 8, which is as low as current
-    // (Java 20 and newer) JDKs will permit you to target.
-    // You must use 8 if any libraries you use need Java 8, which now includes libGDX.
     sourceCompatibility = "8"
     targetCompatibility = "8"
     if (JavaVersion.current().isJava9Compatible()) {
@@ -62,9 +56,6 @@ compileJava {
 }
 
 compileTestJava {
-	// LWJGL3 needs Java 8 starting in libGDX 1.11.0, which forces tests that use LWJGL3
-	// to use Java 8 or higher. Using options.release enforces compatibility with Java 8,
-	// including how NIO Buffers behave (which broke compatibility in Java 9).
     sourceCompatibility = "8"
     targetCompatibility = "8"
     if (JavaVersion.current().isJava9Compatible()) {
@@ -72,10 +63,6 @@ compileTestJava {
     }
 }
 
-// JavaDocs will be published inside the docs/ folder, which you can easily put on GitHub Pages
-// in your repo settings.
-// You may instead want to remove this line if frequent doc changes use up too much repo space,
-// or if you use a different version control host that doesn't host HTML like this.
 javadoc {
     destinationDir = file('docs/apidocs')
     options {
@@ -85,7 +72,6 @@ javadoc {
 
 apply plugin: 'idea'
 // This makes IDEA avoid including generated JavaDocs (which are HTML files) in any search results.
-// If you changed where JavaDocs are published above, you should change the next line, too.
 idea.module.excludeDirs += [file("docs/")]
 
 jar {
@@ -96,29 +82,15 @@ jar {
 }
 
 repositories {
-    // You can comment out mavenLocal() if you have problems with GWT or other sources dependencies.
-    // A more robust solution is to keep mavenLocal() here, but delete and re-download any problematic dependencies
-    //  from inside your .m2/repository/ folder in your home directory.
     mavenLocal()
     mavenCentral()
     google()
-//    maven { url = 'https://central.sonatype.com/repository/maven-snapshots/' }
-    // JitPack is a good repo to have if you depend on commit versions.
-    // Having the below repo might cause problems if uploading to Maven Central.
-    // JitPack commit dependencies are much better than "-SNAPSHOT" version dependencies!
     maven { url = 'https://jitpack.io' }
 }
 
 dependencies {
-// Change gdxVersion in gradle.properties to update or downgrade.
-// Libraries that don't use libGDX directly can change the next line
-// from `api` to `testImplementation` .
-// Using libGDX 1.13.1 is preferred over requiring 1.13.5 because 1.13.5 has serious issues on Android.
-    //noinspection GDXOutdatedVersionGradleGroovy
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
-// "lwjgl3" could be changed to "headless" for command-line-only testing.
     testImplementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion" // if you want graphical tests
-//    testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion" // if you want command-line tests
     testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     testImplementation "junit:junit:4.13.2"
 }

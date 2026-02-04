@@ -54,6 +54,23 @@ public class Chortle {
         return workingText.toString();
     }
 
+    public String getLineOrdered(CharSequence line) {
+        workingText.setLength(0);
+        for (int i = 0, n = line.length(); i < n; i++) {
+            char c = line.charAt(i);
+            addChar(new Glyph(c));
+        }
+        for (int i = 0; i < glyphs.size; i++) {
+            Glyph g = glyphs.get(i);
+            if(g.isRTL())
+                workingText.append(g.getChar());
+            else
+                workingText.append(g.getOriginalChar());
+        }
+        this.glyphs.clear();
+        return workingText.toString();
+    }
+
     public String getText(String given) {
         String[] split = given.split("\n");
         workingText.setLength(0);

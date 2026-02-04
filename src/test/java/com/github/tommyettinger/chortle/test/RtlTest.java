@@ -52,7 +52,7 @@ public class RtlTest extends ApplicationAdapter {
     private static final String HEBREW_TEXT = "אָלֶף־בֵּית עִבְרִי Hebrew! ";
     private static final String ENGLISH_TEXT = "Testing, 1, 2, testing, 123...";
 
-    private final Chortle arFont = new Chortle();
+    private final Chortle chortle = new Chortle();
 
     private Stage stage;
 
@@ -78,7 +78,7 @@ public class RtlTest extends ApplicationAdapter {
         parameter.magFilter = Texture.TextureFilter.Linear;
 
         BitmapFont freeTypeFont = generator.generateFont(parameter);
-        Label label = new Label(arFont.getText(ARABIC_LANGUAGE), new Label.LabelStyle(freeTypeFont, Color.WHITE));
+        Label label = new Label(chortle.getText(ARABIC_LANGUAGE), new Label.LabelStyle(freeTypeFont, Color.WHITE));
         label.layout();
         label.setAlignment(Align.center);
         label.setPosition(512f, 350f, Align.center);
@@ -88,31 +88,33 @@ public class RtlTest extends ApplicationAdapter {
         style.font = freeTypeFont;
         style.fontColor = Color.WHITE;
 
-        TextField textField = new TextField(arFont.getText(INSERT_YOUR_NAME), style);
+        final Chortle insertName = new Chortle();
+        final StringBuilder typingText = new StringBuilder(insertName.getLine(INSERT_YOUR_NAME));
+        TextField textField = new TextField(typingText.toString(), style);
         textField.setAlignment(Align.right);
         textField.setSize(WIDTH, 100f);
         textField.setPosition(WIDTH - 10f, HEIGHT * 0.5f - 45f, Align.right);
         stage.addActor(textField);
 
-        textField.setTextFieldListener(new TextField.TextFieldListener() {
-            @Override
-            public void keyTyped(TextField textField, char c) {
-                String text = arFont.typing(c);
-                textField.setText(text);
-            }
+        textField.setTextFieldListener((textField1, c) -> {
+            typingText.setLength(0);
+            typingText.append(textField1.getText());
+            int cursor = textField1.getCursorPosition();
+            textField1.setText(insertName.getLineOrdered(typingText));
+            textField1.setCursorPosition(cursor);
         });
 
         /*
         * Persian test text
          */
 
-        Label persianLabel = new Label(arFont.getText(PERSIAN_LANGUAGE + "\n" + PERSIAN_COMPLEX_TEXT), new Label.LabelStyle(freeTypeFont, Color.WHITE));
+        Label persianLabel = new Label(chortle.getText(PERSIAN_LANGUAGE + "\n" + PERSIAN_COMPLEX_TEXT), new Label.LabelStyle(freeTypeFont, Color.WHITE));
         persianLabel.layout();
         persianLabel.setAlignment(Align.center);
         persianLabel.setPosition(512f, 440f, Align.center);
         stage.addActor(persianLabel);
 
-        Label hebrewLabel = new Label(arFont.getText(HEBREW_TEXT + "\n" + ENGLISH_TEXT), new Label.LabelStyle(freeTypeFont, Color.WHITE));
+        Label hebrewLabel = new Label(chortle.getText(HEBREW_TEXT + "\n" + ENGLISH_TEXT), new Label.LabelStyle(freeTypeFont, Color.WHITE));
         hebrewLabel.layout();
         hebrewLabel.setAlignment(Align.center);
         hebrewLabel.setPosition(512f, 70f, Align.center);

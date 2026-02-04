@@ -43,6 +43,17 @@ public class Chortle {
         return reorder(workingText).toString();
     }
 
+    public String getLine(CharSequence line) {
+        workingText.setLength(0);
+        for (int i = 0, n = line.length(); i < n; i++) {
+            char c = line.charAt(i);
+            addChar(new Glyph(c));
+        }
+        reorder(workingText);
+        this.glyphs.clear();
+        return workingText.toString();
+    }
+
     public String getText(String given) {
         String[] split = given.split("\n");
         workingText.setLength(0);
